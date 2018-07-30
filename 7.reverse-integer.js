@@ -44,5 +44,27 @@
  * @return {number}
  */
 var reverse = function(x) {
-    
+    if (!inRange(x)) {
+        return 0
+    } else {
+        var sign = getSign(x)
+        x = Math.abs(x)
+        var reverse = 0
+        while(x) {
+            reverse = reverse * 10 + x % 10
+            x = Math.floor(x/10)
+        }
+        reverse = sign == 1 ? -reverse : reverse
+
+        return inRange(reverse) ? reverse : 0
+    }
 };
+
+var inRange = function(x) {
+    var range = Math.pow(2, 31)
+    return x >= - range && x < range
+}
+
+var getSign = function(x) {
+    return x < 0 ? 1 : 0
+}
