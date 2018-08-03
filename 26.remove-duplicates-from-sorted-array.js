@@ -62,16 +62,15 @@
  * @return {number}
  */
 var removeDuplicates = function(nums) {
-    let records = {}
-    let res = []
-    nums.forEach((num) => {
-        if (!records[num]) {
-            res.push(num)
-            records[num] = true
-        }  
-    })
-    nums.splice(0, nums.length)
-    nums.splice(0, 0, ...res)
+    let pre = -1
+    let curr = 0
+    while (curr < nums.length) {
+        if (nums[curr] !== nums[pre]) {
+            nums[++pre] = nums[curr++]
+        } else {
+            curr++;
+        }
+    }
 
-    return nums.length
+    return pre + 1
 };
