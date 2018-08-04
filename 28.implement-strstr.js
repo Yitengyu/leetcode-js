@@ -43,5 +43,24 @@
  * @return {number}
  */
 var strStr = function(haystack, needle) {
-    return haystack.indexOf(needle)
+    let l1 = haystack.length
+    let l2 = needle.length
+    let res = l2 !== 0 ? -1 : 0
+
+    if (l2 && l1 >= l2) {
+        for (let i = 0; i <= l1 - l2; ++i) {
+            let j = 0
+            for (; j < l2; ++j) {
+                if (haystack[i + j] !== needle[j]) {
+                    break
+                }
+            }
+            if (j === l2) {
+                res = i
+                break
+            }
+        }
+    }
+
+    return res
 };
