@@ -43,15 +43,18 @@
  * @return {number}
  */
 var strStr = function(haystack, needle) {
-    let l1 = haystack.length
-    let l2 = needle.length
+    const l1 = haystack.length
+    const l2 = needle.length
+    const matchOffset = getMatchOffset(needle) 
     let res = l2 !== 0 ? -1 : 0
 
     if (l2 && l1 >= l2) {
-        for (let i = 0; i <= l1 - l2; ++i) {
+        let i = 0
+        while (i <= l1 - l2) {
             let j = 0
             for (; j < l2; ++j) {
                 if (haystack[i + j] !== needle[j]) {
+                    i += matchOffset[j]
                     break
                 }
             }
@@ -64,3 +67,36 @@ var strStr = function(haystack, needle) {
 
     return res
 };
+
+const getMatchOffset = function(str) {
+    const patialMatchTable = getPatialMatchTable(str)
+    let res = patialMatchTable.map((patialMatch, index) => index - patialMatch + 1)
+    res.pop()
+    res.unshift(1)
+    return res
+} 
+
+const getPatialMatchTable = function(str) {
+    let res = []
+    let hash = {}
+    let pre = ''
+    let suffix = ['']
+    for (let i = 0; i < str.length; ++ i) {
+        pre += str[i]
+        hash[pre] = i + 1
+        if (i === 0) {
+            res.push(0)
+        } else {
+            suffix = suffix.map(s => s + str[i])
+            hash[str[i]] && suffix.push(str[i])
+            suffix = suffix.filter(s => hash[s])
+            if (suffix.length) {
+                let match = suffix.find(s => hash[s])
+                res.push(hash[match])
+            } else {
+                res.push(0)
+            }
+        }
+    }
+    return res
+}
