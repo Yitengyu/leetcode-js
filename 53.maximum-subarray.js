@@ -34,6 +34,7 @@ var maxSubArray = function(nums) {
     let max = -Infinity
     let sum = 0
     nums.forEach(num => {
+        // sum is the max sum of the subArr ends with this num
         sum += num
         max = Math.max(max, sum)
 
