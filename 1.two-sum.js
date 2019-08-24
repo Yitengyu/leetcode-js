@@ -33,10 +33,29 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-    for (var i = 0, l = nums.length; i < l; ++i) {
-        var j = nums.slice(i+1).indexOf(target - nums[i])
-        if (j !== -1) {
-            return [i, j + i + 1]
-        }
-    }
+  let map = {}
+
+  for (let i = 0; i < nums.length; i++) {
+    let num = nums[i]
+    let complement = target - num
+    if (map[complement] !== undefined) return [map[complement], i]
+    map[num] = i
+  }
 };
+
+// console.log(twoSum([2, 7, 3], 9))
+
+/**
+ * Brute Force
+ */
+// var twoSum = function(nums, target) {
+//     for (var i = 0, len = nums.length; i < len; ++i) {
+//         let another = target - nums[i]
+//         let candidates = nums.slice(i+1)
+
+//         let j = candidates.indexOf(another)
+//         if (j !== -1) {
+//             return [i, j + i + 1]
+//         }
+//     }
+// };
