@@ -38,33 +38,56 @@
  * @return {ListNode}
  */
 var addTwoNumbers = function(l1, l2) {
-    let carry = 0
     let curr = head = new ListNode(0)
-    while (l1 && l2) {
-        let val = l1.val + l2.val + carry
-        carry = val >= 10 ? 1 : 0
-        curr.next = new ListNode(val >= 10 ? val - 10 : val)
+    while (l1 || l2) {
+        curr.val = (l1 && l1.val || 0) + (l2 && l2.val || 0) + curr.val
+        if (curr.val >= 10) {
+            curr.val -= 10
+            curr.next = new ListNode(1)
+        } else if (l1 && l1.next || l2 && l2.next){
+            curr.next = new ListNode(0)
+        }
         curr = curr.next
-
-        l1 = l1.next
-        l2 = l2.next
+        l1 = l1 ? l1.next : undefined
+        l2 = l2 ? l2.next : undefined
     }
-
-    let left = l1 || l2
-    while(left) {
-        let val = left.val + carry
-        carry = val >= 10 ? 1 : 0
-        curr.next = new ListNode(val >= 10 ? val - 10 : val)
-        curr = curr.next
-
-        left = left.next
-
-    }
-    if (carry) {
-        curr.next = new ListNode(carry)
-    }
-    return head.next
+    return head
 };
+
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+// var addTwoNumbers = function(l1, l2) {
+//     let carry = 0
+//     let curr = head = new ListNode(0)
+//     while (l1 && l2) {
+//         let val = l1.val + l2.val + carry
+//         carry = val >= 10 ? 1 : 0
+//         curr.next = new ListNode(val >= 10 ? val - 10 : val)
+//         curr = curr.next
+
+//         l1 = l1.next
+//         l2 = l2.next
+//     }
+
+//     let left = l1 || l2
+//     while(left) {
+//         let val = left.val + carry
+//         carry = val >= 10 ? 1 : 0
+//         curr.next = new ListNode(val >= 10 ? val - 10 : val)
+//         curr = curr.next
+
+//         left = left.next
+
+//     }
+//     if (carry) {
+//         curr.next = new ListNode(carry)
+//     }
+//     return head.next
+// };
+
 // function print(l) {
 //     let arr = []
 //     while (l) {
