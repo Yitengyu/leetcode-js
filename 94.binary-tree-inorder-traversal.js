@@ -15,25 +15,18 @@
  * @return {number[]}
  */
 var inorderTraversal = function(root) {
-  let curr = root // 当前经过的节点
+  let curr = root // 未记录过的节点
   let result = []
-  let rootStack = []  // 包含未记录的父节点
+  let rootStack = []  // 包含待记录的节点，顺序为访问的顺序
 
-  while (curr) {
-    if (curr.isVisited) {
-      result.push(curr.val)
-      curr = curr.right || rootStack.pop()
-    } else {
+  while (curr || rootStack.length) {
+    while (curr) {
       rootStack.push(curr)
-      curr.isVisited = true
-
-      while (curr.left) {
-        curr = curr.left
-        curr.isVisited = true
-        rootStack.push(curr)
-      }
-      curr = rootStack.pop()
+      curr = curr.left
     }
+    curr = rootStack.pop()
+    result.push(curr.val)
+    curr = curr.right
   }
   return result
 };
