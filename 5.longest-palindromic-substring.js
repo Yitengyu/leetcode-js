@@ -35,11 +35,11 @@
 var longestPalindrome = function(s) {
     let result = ''
     s.split('').forEach((char, index) => {
-      let subLongest = getPalindromeLengthByCenter(s, index)
+      let subLongest = expandAroundCenter(s, index, index)
       if (result.length < subLongest.length) {
         result = subLongest
       }
-      subLongest = getPalindromeLengthByCenter(s, index + 0.5)
+      subLongest = expandAroundCenter(s, index, index + 1)
       if (result.length < subLongest.length) {
         result = subLongest
       }
@@ -47,23 +47,10 @@ var longestPalindrome = function(s) {
     return result
 };
 
-var getPalindromeLengthByCenter = function (str, centerIndex) {
-  let offset = 1
-  let leftIndex, rightIndex
-  if (centerIndex * 2 % 2 === 0) {
-    leftIndex = () => centerIndex - offset
-    rightIndex = () => centerIndex + offset
-
-  } else {
-    leftIndex = () => centerIndex - offset + 0.5
-    rightIndex = () => centerIndex + offset - 0.5
+var expandAroundCenter = function (str, leftIndex, rightIndex) {
+  while (str[leftIndex] && (str[leftIndex] === str[rightIndex])) {
+    leftIndex--
+    rightIndex++
   }
-
-  while (str[leftIndex()] && (str[leftIndex()] === str[rightIndex()])) {
-    offset++
-  }
-  offset -= 1
-  return str.slice(leftIndex(), rightIndex() + 1)
+  return str.slice(leftIndex + 1, rightIndex)
 }
-
-// console.log(longestPalindrome('122442'))
