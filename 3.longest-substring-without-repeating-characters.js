@@ -51,15 +51,16 @@
  */
 var lengthOfLongestSubstring = function(s) {
     let max = 0
-    let rec = ""
+    let substr = ""
     for (let i = 0; i < s.length; ++i) {
-        let pos = rec.indexOf(s[i])
+        let pos = substr.indexOf(s[i])
         if (pos === -1 ) {
-            rec += s[i]
-            max = Math.max(max, rec.length)
+            substr += s[i]
         } else {
-            rec = rec.slice(pos + 1) + s[i]
+            max = Math.max(max, substr.length)
+            substr = substr.slice(pos + 1) + s[i]
         }
     }
+    max = Math.max(max, substr.length)
     return max
 };
