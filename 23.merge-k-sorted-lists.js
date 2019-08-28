@@ -15,12 +15,23 @@
  * @return {ListNode}
  */
 var mergeKLists = function(lists) {
-    for (let i = 0; )
+    let h = new heap(lists.filter(list => list), i => i.val)
+    let head = node = h.pop()
+    while (h.size()) {
+      node.next && h.push(node.next)
+
+      let next = h.pop()
+      node.next = next
+      node = next
+    }
+
+    return head || null
 };
 
-var heap = function (arr) {
+var heap = function (arr, valueFunc = i => i) {
   arr = arr || []
   this.content = arr
+  this.valueFunc = valueFunc
   this.build()
 }
 
@@ -44,9 +55,9 @@ heap.prototype.push = function (n) {
 
 heap.prototype.bubbleUp = function (i) {
   if (i === 0) return
-  let parentIndex = Math.floor((i - 1) / 2)
   while (i > 0) {
-    if (this.content[parentIndex] <= this.content[i]) return
+    let parentIndex = Math.floor((i - 1) / 2)
+    if (this.valueFunc(this.content[parentIndex]) <= this.valueFunc(this.content[i])) return
     let parentValue = this.content[parentIndex]
     this.content[parentIndex] = this.content[i]
     this.content[i] = parentValue
@@ -72,31 +83,34 @@ heap.prototype.sinkDown = function (i) {
     let childIndexLeft = 2 * i + 1
     let childIndexRight = 2 * i + 2
 
-    let swap = null
+    let swap = i
     if (childIndexLeft <= this.content.length - 1) {
-      if (this.content[childIndexLeft] < this.content[i]) {
+      if (this.valueFunc(this.content[childIndexLeft]) < this.valueFunc(this.content[i])) {
         swap = childIndexLeft
       }
     }
 
     if (childIndexRight <= this.content.length - 1) {
-      if (this.content[childIndexRight] < this.content[i]) {
-        swap = this.content[swap] < this.content[childIndexRight]
+      if (this.valueFunc(this.content[childIndexRight]) < this.valueFunc(this.content[i])) {
+        swap = this.valueFunc(this.content[swap]) < this.valueFunc(this.content[childIndexRight])
         ? swap
         : childIndexRight
       }
     }
-    if (swap === null) return
+    if (swap === i) return
 
     let swapValue = this.content[swap]
     this.content[swap] = this.content[i]
     this.content[i] = swapValue
+
+    i = swap
   }
 }
 
 
-// let arr = [3, 4, 1, 8]
+// let arr = [3, 3, 4, 1, 4, 8]
 // let hh = new heap(arr)
+// hh.push(0)
 // while (hh.size() > 0)
-//   console.log(hh.pop());
+//   console.log(hh.pop(), hh.content);
 
